@@ -1,0 +1,56 @@
+==============================================================
+function as Input & recursion
+==============================================================
+
+def id(x:Int):Int=x
+def cube(x:Int):Int=x*x*x
+def fact(n:Int):Double ={
+if(n==0) 1
+else n*fact(n-1) // recursion
+}
+
+def sumOf(f:Int=>Int,a:Int,b:Int):Double={
+if(a>b) 0
+else f(a)+sum(a+1,b) // recursion
+}
+
+sumOf(id,a,b)
+sumOf(cube,a,b)
+sumOf(fact,a,b)
+
+==============================================================
+Annonymous function as Input & tail recursion
+==============================================================
+
+
+def sum(f:Int=>Int,a:Int,b:Int,temp:Int):Double={
+if(a>b) temp
+else sum(f,a+1,b,f(a)+temp) // tail recursion
+}
+
+//a = lower bound b=upper bound
+sum(x=>x,3,5,0)
+sum(x=>x*x*x,4,10,0)
+
+==============================================================
+currying
+==============================================================
+before currying 
+---
+def sumReturnsFunc(sqr:Int=>Int,cube:Int=>Int):(Int,Int)=>Int ={
+     | def fun(a:Int,b:Int):Int={sqr(a)+cube(b)}
+     | fun
+     | }
+	 
+val a = sumReturnsFunc(x=>x*x,y=>y*y*y)
+a(10,20) 
+
+----
+after currying
+----
+
+def sumReturnsFunc(sqr:Int=>Int,cube:Int=>Int)(a:Int,b:Int):Int ={
+{sqr(a)+cube(b)}
+}
+
+sumReturnsFunc(x=>x*x,y=>y*y*y)(10,20)
